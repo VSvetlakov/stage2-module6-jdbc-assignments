@@ -27,13 +27,13 @@ public class SimpleJDBCRepository {
     private static final String findUserByNameSQL = "SELECT * FROM myusers WHERE \"firstName\" = ?";
     private static final String findAllUserSQL = "SELECT * FROM myusers";
 
-    public Long createUser() {
+    public Long createUser(User user) {
         Long generatedKey = null;
         try {
             ps = connection.prepareStatement(createUserSQL,Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, "firstName");
-            ps.setString(2, "");
-            ps.setInt(3, 0);
+            ps.setString(1, user.getFirstName());
+            ps.setString(2, user.getLastName());
+            ps.setInt(3, user.getAge());
             ps.executeUpdate();
 
             ResultSet keyset  = ps.getGeneratedKeys();
@@ -118,30 +118,24 @@ public class SimpleJDBCRepository {
         return users;
     }
 
-    public User updateUser() {
-
-        Long id = 1L;
-        String firstName = "newName";
-        String lastName = "";
-        int age = 10;
+    public User updateUser(User user) {
 
         try {
             ps = connection.prepareStatement(updateUserSQL);
-            ps.setString(1, firstName);
-            ps.setString(2, lastName);
-            ps.setInt(3, age);
-            ps.setLong(4, id);
+            ps.setString(1, user.getFirstName());
+            ps.setString(2, user.getLastName());
+            ps.setInt(3, user.getAge());
+            ps.setLong(4, user.getId());
             int rowAffected = ps.executeUpdate();
             if (rowAffected>0) {
                 ps.close();
-                return new User(id,firstName,lastName,age);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return null;
+        return user;
     }
 
     private void deleteUser(Long userId) {
