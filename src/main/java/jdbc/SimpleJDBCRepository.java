@@ -20,11 +20,11 @@ public class SimpleJDBCRepository {
     private PreparedStatement ps = null;
     private Statement st = null;
 
-    private static final String createUserSQL = "INSERT INTO myusers (\"firstName\", \"lastName\", age) VALUES (?, ?, ?)";
-    private static final String updateUserSQL = "UPDATE myusers SET \"firstName\" = ?, \"lastName\" = ?, age = ? WHERE id = ?";
+    private static final String createUserSQL = "INSERT INTO myusers (firstName, lastName, age) VALUES (?, ?, ?)";
+    private static final String updateUserSQL = "UPDATE myusers SET firstName = ?, lastName = ?, age = ? WHERE id = ?";
     private static final String deleteUser = "DELETE FROM myusers WHERE id = ?";
     private static final String findUserByIdSQL = "SELECT * FROM myusers WHERE id = ?";
-    private static final String findUserByNameSQL = "SELECT * FROM myusers WHERE \"firstName\" = ?";
+    private static final String findUserByNameSQL = "SELECT * FROM myusers WHERE firstName = ?";
     private static final String findAllUserSQL = "SELECT * FROM myusers";
 
     public Long createUser(User user) {
@@ -157,5 +157,11 @@ public class SimpleJDBCRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void main(String[] args) {
+        SimpleJDBCRepository repository = new SimpleJDBCRepository();
+
+        repository.findAllUser();
     }
 }
