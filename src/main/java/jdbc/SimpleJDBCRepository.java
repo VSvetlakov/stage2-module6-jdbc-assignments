@@ -30,6 +30,7 @@ public class SimpleJDBCRepository {
     public Long createUser(User user) {
         Long generatedKey = null;
         try {
+            connection = CustomDataSource.getInstance().getConnection();
             ps = connection.prepareStatement(createUserSQL,Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
@@ -52,6 +53,7 @@ public class SimpleJDBCRepository {
         User user = null;
         ResultSet resultSet = null;
         try {
+            connection = CustomDataSource.getInstance().getConnection();
             ps = connection.prepareStatement(findUserByIdSQL);
             ps.setLong(1, userId);
 
@@ -75,6 +77,7 @@ public class SimpleJDBCRepository {
         User user = null;
         ResultSet resultSet = null;
         try {
+            connection = CustomDataSource.getInstance().getConnection();
             ps = connection.prepareStatement(findUserByNameSQL);
             ps.setString(1, userName);
 
@@ -101,6 +104,7 @@ public class SimpleJDBCRepository {
         ResultSet resultSet = null;
 
         try {
+            connection = CustomDataSource.getInstance().getConnection();
             st = connection.createStatement();
             resultSet = st.executeQuery(findAllUserSQL);
             while (resultSet.next()) {
@@ -121,6 +125,7 @@ public class SimpleJDBCRepository {
     public User updateUser(User user) {
 
         try {
+            connection = CustomDataSource.getInstance().getConnection();
             ps = connection.prepareStatement(updateUserSQL);
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
@@ -141,6 +146,7 @@ public class SimpleJDBCRepository {
     public void deleteUser(Long userId) {
 
         try {
+            connection = CustomDataSource.getInstance().getConnection();
             ps = connection.prepareStatement(deleteUser);
             ps.setLong(1, userId);
             int rowAffected = ps.executeUpdate();

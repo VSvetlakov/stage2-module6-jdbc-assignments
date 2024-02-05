@@ -28,6 +28,11 @@ public class CustomDataSource implements DataSource {
         this.url = url;
         this.password = password;
         this.name = name;
+        try {
+            Class.forName(driver) ;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public static CustomDataSource getInstance() {
@@ -38,8 +43,6 @@ public class CustomDataSource implements DataSource {
 
                     try {
                         Properties props = new Properties();
-//                        InputStream is = getClass().getClassLoader().getResourceAsStream("file.txt");
-//                        FileInputStream fis = new FileInputStream("app.properties");
                         props.load(CustomDataSource.class.getClassLoader().getResourceAsStream("app.properties"));
 
                         String driver   = props.getProperty("postgres.driver");
@@ -47,11 +50,9 @@ public class CustomDataSource implements DataSource {
                         String password = props.getProperty("postgres.password");
                         String url      = props.getProperty("postgres.url");
 
-                        Class.forName(driver) ;
-
                         instance = new CustomDataSource(driver,url,password,name);
 
-                    } catch (ClassNotFoundException | IOException e) {
+                    } catch (IOException e) {
                         e.printStackTrace();
                         return null;
                     }
